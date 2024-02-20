@@ -1,18 +1,18 @@
-# Импортируем класс HTTPStatus.
-from http import HTTPStatus
 # Импортируем функцию получения модели пользователя.
 from django.contrib.auth import get_user_model
 # Импортируем базовый клиент и класс модуля django.test.
 from django.test import Client, TestCase
-# Импортируем функцию reverse().
+# Импортируем функцию reverse(), она понадобится для получения адреса страницы.
 from django.urls import reverse
-
+# Импортируем класс HTTPStatus.
+from http import HTTPStatus
 # Импортируем из файла с формами список стоп-слов и предупреждение формы.
 # Загляните в news/forms.py, разберитесь с их назначением.
 from news.forms import BAD_WORDS, WARNING
 # Импортируем класс модели комментария и новости.
 from news.models import Comment, News
 
+# Получаем модель пользователя.
 User = get_user_model()
 
 

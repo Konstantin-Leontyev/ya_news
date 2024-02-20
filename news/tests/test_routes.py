@@ -1,15 +1,15 @@
-# Импортируем класс HTTPStatus.
-from http import HTTPStatus
-# Импортируем декоратор skip для возможности пропуска теста.
-from unittest import skip
 # Импортируем функцию получения модели пользователя.
 from django.contrib.auth import get_user_model
 # Импортируем базовый класс модуля django.test для последующего наследования.
 from django.test import TestCase
-# Импортируем функцию reverse().
+# Импортируем функцию reverse(), она понадобится для получения адреса страницы.
 from django.urls import reverse
+# Импортируем класс HTTPStatus.
+from http import HTTPStatus
 # Импортируем класс модели комментария и новости.
 from news.models import Comment, News
+# Импортируем декоратор skip для возможности пропуска теста.
+from unittest import skip
 
 # Получаем модель пользователя.
 User = get_user_model()

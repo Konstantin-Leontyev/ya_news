@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 # Импортируем функцию для получения модели пользователя.
 from django.contrib.auth import get_user_model
-# Импортируем настройку пагинации.
+# Импортируем настройки проекта, чтобы получить доступ к парамеру пагинации.
 from django.conf import settings
 # Импортируем базовый класс модуля django.test для последующего наследования.
 from django.test import TestCase
@@ -10,11 +10,12 @@ from django.test import TestCase
 from django.urls import reverse
 # Импортируем timezone.
 from django.utils import timezone
-
+# Импортируем класс модели комментария и новости.
 from news.models import Comment, News
-# Импортируем класс формы.
+# Импортируем класс формы CommentForm.
 from news.forms import CommentForm
 
+# Получаем модель пользователя.
 User = get_user_model()
 
 

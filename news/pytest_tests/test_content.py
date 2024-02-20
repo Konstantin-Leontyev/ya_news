@@ -1,21 +1,18 @@
-# news/tests/test_content.py
-from datetime import datetime, timedelta
-
-import pytest
 # Импортируем функцию для получения модели пользователя.
 from django.contrib.auth import get_user_model
+# Импортируем настройки проекта, чтобы получить доступ к парамеру пагинации.
 from django.conf import settings
-from django.test import TestCase, Client
 # Импортируем функцию reverse(), она понадобится для получения адреса страницы.
 from django.urls import reverse
-from django.utils import timezone
-
-from news.models import Comment, News
 # Импортируем класс формы.
 from news.forms import CommentForm
+# Импортируем библиотеку pytest.
+import pytest
 
+# Получаем модель пользователя.
 User = get_user_model()
 
+# Задаем адрес домашней страницы в качестве глобальной константы.
 HOME_URL = reverse('news:home')
 
 
@@ -74,7 +71,9 @@ def test_comments_order(
     )
 )
 def test_different_user_has_or_not_form(
-        parametrized_client, detail_url, form_in_context
+        parametrized_client,
+        detail_url,
+        form_in_context,
 ):
     response = parametrized_client.get(detail_url)
     assert ('form' in response.context) is form_in_context

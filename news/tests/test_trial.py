@@ -1,10 +1,13 @@
+# Импортируем функцию получения модели пользователя.
+from django.contrib.auth import get_user_model
+# Импортируем базовый клиент и класс модуля django.test.
+from django.test import Client, TestCase
+# Импортируем класс модели комментария и новости.
+from news.models import News
+# Импортируем декоратор skip для возможности пропуска теста.
 from unittest import skip
 
-from django.contrib.auth import get_user_model
-from django.test import Client, TestCase
-
-from news.models import News
-
+# Получаем модель пользователя.
 User = get_user_model()
 
 
