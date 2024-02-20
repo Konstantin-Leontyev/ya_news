@@ -1,11 +1,14 @@
-# news/tests/test_content.py
+# Импортируем datetime, timedelta.
 from datetime import datetime, timedelta
 # Импортируем функцию для получения модели пользователя.
 from django.contrib.auth import get_user_model
+# Импортируем настройку пагинации.
 from django.conf import settings
+# Импортируем базовый класс модуля django.test для последующего наследования.
 from django.test import TestCase
 # Импортируем функцию reverse(), она понадобится для получения адреса страницы.
 from django.urls import reverse
+# Импортируем timezone.
 from django.utils import timezone
 
 from news.models import Comment, News
@@ -33,6 +36,7 @@ class TestContent(TestCase):
             # Для каждой новости уменьшаем дату на index дней от today,
             # где index - счётчик цикла.
         ]
+        # Заполняем базу данных списком новостей в рамках одного запроса.
         News.objects.bulk_create(all_news)
 
     def test_news_count(self):
@@ -47,6 +51,7 @@ class TestContent(TestCase):
         self.assertEqual(news_count, settings.NEWS_COUNT_ON_HOME_PAGE)
 
     def test_news_order(self):
+        # Загружаем главную страницу.
         response = self.client.get(self.HOME_URL)
         object_list = response.context['object_list']
         # Получаем даты новостей в том порядке, как они выведены на странице.
@@ -61,13 +66,14 @@ class TestDetailPage(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        # Создаём новость в БД.
         cls.news = News.objects.create(
             title='Тестовая новость', text='Просто текст.'
         )
         # Сохраняем в переменную адрес страницы с новостью:
         cls.detail_url = reverse('news:detail', args=(cls.news.id,))
         cls.author = User.objects.create(username='Комментатор')
-        # Запоминаем текущее время:
+        # Запоминаем текущее время.
         now = timezone.now()
         # Создаём комментарии в цикле.
         for index in range(10):
@@ -81,6 +87,7 @@ class TestDetailPage(TestCase):
             comment.save()
 
     def test_comments_order(self):
+        # Загружаем страницу новости.
         response = self.client.get(self.detail_url)
         # Проверяем, что объект новости находится в словаре контекста
         # под ожидаемым именем - названием модели.
@@ -97,13 +104,16 @@ class TestDetailPage(TestCase):
         self.assertEqual(all_timestamps, sorted_timestamps)
 
     def test_anonymous_client_has_no_form(self):
+        # Загружаем главную страницу.
         response = self.client.get(self.detail_url)
+        # Проверяем, что в ответе нет формы.
         self.assertNotIn('form', response.context)
 
     def test_authorized_client_has_form(self):
         # Авторизуем клиент при помощи ранее созданного пользователя.
         self.client.force_login(self.author)
         response = self.client.get(self.detail_url)
+        # Проверяем, что в ответе есть форма.
         self.assertIn('form', response.context)
         # Проверим, что объект формы соответствует нужному классу формы.
         self.assertIsInstance(response.context['form'], CommentForm)

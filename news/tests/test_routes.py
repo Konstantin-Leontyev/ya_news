@@ -1,13 +1,14 @@
-# news/tests/test_routes.py
 # Импортируем класс HTTPStatus.
 from http import HTTPStatus
+# Импортируем декоратор skip для возможности пропуска теста.
 from unittest import skip
-
+# Импортируем функцию получения модели пользователя.
 from django.contrib.auth import get_user_model
+# Импортируем базовый класс модуля django.test для последующего наследования.
 from django.test import TestCase
 # Импортируем функцию reverse().
 from django.urls import reverse
-# Импортируем класс модели новостей.
+# Импортируем класс модели комментария и новости.
 from news.models import Comment, News
 
 # Получаем модель пользователя.
@@ -22,7 +23,7 @@ class TestRoutes(TestCase):
         # Создаём двух пользователей с разными именами:
         cls.author = User.objects.create(username='Лев Толстой')
         cls.reader = User.objects.create(username='Читатель простой')
-        # От имени одного пользователя создаём комментарий к новости:
+        # От имени пользователя author создаём комментарий к новости.
         cls.comment = Comment.objects.create(
             news=cls.news,
             author=cls.author,
@@ -40,8 +41,11 @@ class TestRoutes(TestCase):
 
     @skip
     def test_detail_page(self):
+        # Вместо прямого указания адреса
+        # получаем его при помощи функции reverse().
         url = reverse('news:detail', args=(self.news.id,))
         response = self.client.get(url)
+        # Проверяем, что код ответа равен статусу OK (он же 200).
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_pages_availability(self):
@@ -49,7 +53,9 @@ class TestRoutes(TestCase):
         # Каждый вложенный кортеж содержит два элемента:
         # имя пути и позиционные аргументы для функции reverse().
         urls = (
-            # Путь для главной страницы не принимает
+            # Путь для главной страницы,
+            # входа в учётную запись, выхода из неё
+            # и регистрации не принимает
             # никаких позиционных аргументов,
             # поэтому вторым параметром ставим None.
             ('news:home', None),
@@ -62,13 +68,14 @@ class TestRoutes(TestCase):
             ('users:signup', None),
         )
         # Итерируемся по внешнему кортежу
-        # и распаковываем содержимое вложенных кортежей:
+        # и распаковываем содержимое вложенных кортежей.
         for name, args in urls:
             with self.subTest(name=name):
                 # Передаём имя и позиционный аргумент в reverse()
-                # и получаем адрес страницы для GET-запроса:
+                # и получаем адрес страницы для GET-запроса.
                 url = reverse(name, args=args)
                 response = self.client.get(url)
+                # Проверяем, что код ответа равен статусу OK (он же 200).
                 self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_availability_for_comment_edit_and_delete(self):

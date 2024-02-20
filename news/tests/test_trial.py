@@ -1,4 +1,3 @@
-# news/tests/test_trial.py
 from unittest import skip
 
 from django.contrib.auth import get_user_model
@@ -9,7 +8,7 @@ from news.models import News
 User = get_user_model()
 
 
-@skip()
+@skip
 class TestNews(TestCase):
     # Все нужные переменные сохраняем в атрибуты класса.
     TITLE = 'Заголовок новости'
