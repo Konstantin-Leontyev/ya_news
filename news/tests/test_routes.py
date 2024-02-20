@@ -92,7 +92,9 @@ class TestRoutes(TestCase):
             for name in ('news:edit', 'news:delete'):
                 with self.subTest(user=user, name=name):
                     url = reverse(name, args=(self.comment.id,))
+                    #  Загружаем страницу.
                     response = self.client.get(url)
+                    # Проверяем, что код ответа равен статусу ожидаемого для пользователя.
                     self.assertEqual(response.status_code, status)
 
     def test_redirect_for_anonymous_client(self):
