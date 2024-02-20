@@ -24,6 +24,12 @@ def not_author(django_user_model):
 
 
 @pytest.fixture
+def anonymous_client():  # Вызываем фикстуру автора.
+    # Создаём новый экземпляр клиента, чтобы не менять глобальный.
+    return Client()
+
+
+@pytest.fixture
 def author_client(author):  # Вызываем фикстуру автора.
     # Создаём новый экземпляр клиента, чтобы не менять глобальный.
     client = Client()
@@ -74,6 +80,15 @@ def comment(author, news):
 
 
 @pytest.fixture
+def comment_form_data(author, news):
+    return {
+        'news': news,
+        'author': author,
+        'text': 'Новый текст',
+    }
+
+
+@pytest.fixture
 def comment_factory(author, news):
     today = datetime.today()
     all_comments = [
@@ -109,4 +124,19 @@ def comment_id_for_args(comment):
 @pytest.fixture
 def detail_url(news):
     return reverse('news:detail', args=(news.id,))
+
+
+@pytest.fixture
+def comment_delete_url(comment):
+    return reverse('news:delete', args=(comment.id,))
+
+
+@pytest.fixture
+def comment_edit_url(comment):
+    return reverse('news:edit', args=(comment.id,))
+
+
+@pytest.fixture
+def comments_url(detail_url):
+    return detail_url + '#comments'
 

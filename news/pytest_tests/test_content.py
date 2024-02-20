@@ -70,7 +70,7 @@ def test_comments_order(
     (
         # Передаём фикстуры в параметры при помощи "ленивых фикстур":
         (pytest.lazy_fixture('author_client'), True),
-        (Client(), False),
+        (pytest.lazy_fixture('anonymous_client'), False),
     )
 )
 def test_different_user_has_or_not_form(
